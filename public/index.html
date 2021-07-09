@@ -7,11 +7,15 @@
 
     <script type="text/javascript">
         function isAndroid() {
-          return !!window.tswebview
+          return !!window.tswebview;
         }
 
         function isIOS() {
-          return !!window.webkit && !!window.webkit.messageHandlers && !!window.webkit.messageHandlers.tswebview
+          return !!window.webkit && !!window.webkit.messageHandlers && !!window.webkit.messageHandlers.tswebview;
+        }
+
+        function reload() {
+          location.reload();
         }
 
         function openNewWebView() {
@@ -26,7 +30,20 @@
             window.webkit.messageHandlers.openNewWebView.postMessage(params);
           } else {
             // No Android or iOS interface found
-            alert("No APIs found.");
+            alert("No openNewWebView APIs found.");
+          }
+        }
+
+        function closeWebView() {
+          if (isAndroid() && !!window.tsapp.closeWebView) {
+            // Call Android interface
+            window.tswebview.closeWebView(JSON.stringify(''));
+          } else if (isIOS()) {
+            // Call iOS interface
+            window.webkit.messageHandlers.closeWebView1.postMessage('');
+          } else {
+            // No Android or iOS interface found
+            alert("No closeWebView APIs found.");
           }
         }
 
@@ -51,10 +68,13 @@
     <div id="message">
       <h2>Welcome</h2>
       <h1>TSWebView JavaScript Test Page</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
+      <br>
+      <a onclick="reload()">Reload Page</a>
       <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
       <br>
       <a onclick="openNewWebView()">New WebView</a>
+      <br>
+      <a onclick="closeWebView()">Close WebView</a>
     </div>
     
   </body>
