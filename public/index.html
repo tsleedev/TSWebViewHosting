@@ -22,7 +22,7 @@
           var params = {
             path: "/"
           }
-          if (isAndroid() && !!window.tsapp.openNewWebView) {
+          if (isAndroid() && !!window.tswebview.openNewWebView) {
             // Call Android interface
             window.tswebview.openNewWebView(JSON.stringify(params));
           } else if (isIOS() && !!window.webkit.messageHandlers.openNewWebView) {
@@ -35,10 +35,10 @@
         }
 
         function closeWebView() {
-          if (isAndroid() && !!window.tsapp.closeWebView) {
+          if (isAndroid() && !!window.tswebview.closeWebView) {
             // Call Android interface
             window.tswebview.closeWebView(JSON.stringify(''));
-          } else if (isIOS()) {
+          } else if (isIOS() && !!window.webkit.messageHandlers.closeWebView1) {
             // Call iOS interface
             window.webkit.messageHandlers.closeWebView1.postMessage('');
           } else {
