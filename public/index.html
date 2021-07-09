@@ -6,23 +6,31 @@
     <title>Welcome to TSWebView JavaScript Test Page</title>
 
     <script type="text/javascript">
+        function isAndroid() {
+          return !!window.tswebview
+        }
+
+        function isIOS() {
+          return !!window.webkit && !!window.webkit.messageHandlers && !!window.webkit.messageHandlers.tswebview
+        }
+
         function openNewWebView() {
-          if (window.tsapp) {
+          var params = JSON.stringify({
+            path: "/"
+          })
+          if (isAndroid() && !!window.tsapp.openNewWebView) {
             // Call Android interface
-            window.tsapp.openNewWebView(name, JSON.stringify(params));
-          } else if (window.webkit
-              && window.webkit.messageHandlers
-              && window.webkit.messageHandlers.tsapp) {
+            window.tswebview.openNewWebView(params);
+          } else if (isIOS()) {
             // Call iOS interface
             var message = {
               command: 'openNewWebView',
-              name: 'name',
-              parameters: 'params'
+              params: params
             };
-            window.webkit.messageHandlers.tsapp.postMessage(message);
+            window.webkit.messageHandlers.tswebview.postMessage(message);
           } else {
             // No Android or iOS interface found
-            alert("No openNewWebView APIs found.");
+            alert("No APIs found.");
           }
         }
 
