@@ -38,9 +38,9 @@
           if (isAndroid() && !!window.tswebview.closeWebView) {
             // Call Android interface
             window.tswebview.closeWebView(JSON.stringify(''));
-          } else if (isIOS() && !!window.webkit.messageHandlers.closeWebView1) {
+          } else if (isIOS() && !!window.webkit.messageHandlers.closeWebView) {
             // Call iOS interface
-            window.webkit.messageHandlers.closeWebView1.postMessage('');
+            window.webkit.messageHandlers.closeWebView.postMessage('');
           } else {
             // No Android or iOS interface found
             alert("No closeWebView APIs found.");
