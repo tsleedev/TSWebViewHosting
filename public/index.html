@@ -15,19 +15,15 @@
         }
 
         function openNewWebView() {
-          var params = JSON.stringify({
+          var params = {
             path: "/"
-          })
+          }
           if (isAndroid() && !!window.tsapp.openNewWebView) {
             // Call Android interface
-            window.tswebview.openNewWebView(params);
-          } else if (isIOS()) {
+            window.tswebview.openNewWebView(JSON.stringify(params));
+          } else if (isIOS() && !!window.webkit.messageHandlers.openNewWebView) {
             // Call iOS interface
-            var message = {
-              command: 'openNewWebView',
-              params: params
-            };
-            window.webkit.messageHandlers.tswebview.postMessage(message);
+            window.webkit.messageHandlers.openNewWebView.postMessage(params);
           } else {
             // No Android or iOS interface found
             alert("No APIs found.");
@@ -58,12 +54,7 @@
       <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
       <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
       <br>
-      <a target="openNewWebView();" href="https://firebase.google.com/docs/hosting/">New WebView</a>
-      <div class="lineitem25" onclick="openNewWebView();">
-          <span class="blockitem">
-              <p class="s1">New WebView</p>
-          </span>
-      </div>
+      <a onclick="openNewWebView()">New WebView</a>
     </div>
     
   </body>
