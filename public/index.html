@@ -11,7 +11,7 @@
         }
 
         function isIOS() {
-          return !!window.webkit && !!window.webkit.messageHandlers && !!window.webkit.messageHandlers.tswebview;
+          return !!window.webkit && !!window.webkit.messageHandlers;
         }
 
         function reload() {
@@ -70,6 +70,7 @@
       <h1>TSWebView JavaScript Test Page</h1>
       <br>
       <a onclick="reload()">Reload Page</a>
+      <br>
       <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
       <br>
       <a onclick="openNewWebView()">New WebView</a>
