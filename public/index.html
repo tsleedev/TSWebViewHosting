@@ -18,6 +18,14 @@
           location.reload();
         }
 
+        function alert() {
+          alert('alert popup');
+        }
+
+        function confirm() {
+          confirm('confirm popup');
+        }
+
         function openNewWebView() {
           var params = {
             path: "/"
@@ -66,13 +74,18 @@
   </head>
   <body>
     <div id="message">
-      <h2>Welcome</h2>
       <h1>TSWebView JavaScript Test Page</h1>
+      <h2>Web default function</h2>
       <br>
       <a onclick="reload()">Reload Page</a>
       <br>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+      <a onclick="alert()">Alert Popup</a>
       <br>
+      <a onclick="confirm()">Confirm Popup</a>
+      <br>
+      <a target="_blank" href="https://tswebviewhosting.web.app">Open Page with _blank</a>
+      <br>
+      <h2>Web to App bridge</h2>
       <a onclick="openNewWebView()">New WebView</a>
       <br>
       <a onclick="closeWebView()">Close WebView</a>
