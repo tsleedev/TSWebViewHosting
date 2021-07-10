@@ -55,6 +55,19 @@
           }
         }
 
+        function goBack() {
+          if (isAndroid() && !!window.tswebview.goBack) {
+            // Call Android interface
+            window.tswebview.closeWebView(JSON.stringify(''));
+          } else if (isIOS() && !!window.webkit.messageHandlers.goBack) {
+            // Call iOS interface
+            window.webkit.messageHandlers.goBack.postMessage('');
+          } else {
+            // No Android or iOS interface found
+            alert("No goBack APIs found.");
+          }
+        }
+
     </script>
 
     <style media="screen">
@@ -89,6 +102,8 @@
       <a onclick="openNewWebView()">New WebView</a>
       <br>
       <a onclick="closeWebView()">Close WebView</a>
+      <br>
+      <a onclick="goBack()">Go Back</a>
     </div>
     
   </body>
