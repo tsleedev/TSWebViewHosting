@@ -26,9 +26,25 @@
           confirm('confirm popup');
         }
 
-        function openNewWebView() {
+        function openNewWebViewWithPath() {
           var params = {
-            path: "/"
+            path: "/next.html"
+          }
+          if (isAndroid() && !!window.tswebview.openNewWebView) {
+            // Call Android interface
+            window.tswebview.openNewWebView(JSON.stringify(params));
+          } else if (isIOS() && !!window.webkit.messageHandlers.openNewWebView) {
+            // Call iOS interface
+            window.webkit.messageHandlers.openNewWebView.postMessage(params);
+          } else {
+            // No Android or iOS interface found
+            alert("No openNewWebView APIs found.");
+          }
+        }
+
+        function openNewWebViewWithFullUrl() {
+          var params = {
+            url: "https://tswebviewhosting.web.app/next.html"
           }
           if (isAndroid() && !!window.tswebview.openNewWebView) {
             // Call Android interface
@@ -68,6 +84,23 @@
           }
         }
 
+        function openExternalWebView() {
+          var params = {
+            url: "https://www.instagram.com/dlwlrma/?hl=ko"
+            // url: "https://tswebviewhosting.web.app"
+          }
+          if (isAndroid() && !!window.tswebview.openExternalWebView) {
+            // Call Android interface
+            window.tswebview.openNewWebView(JSON.stringify(params));
+          } else if (isIOS() && !!window.webkit.messageHandlers.openExternalWebView) {
+            // Call iOS interface
+            window.webkit.messageHandlers.openExternalWebView.postMessage(params);
+          } else {
+            // No Android or iOS interface found
+            alert("No openExternalWebView APIs found.");
+          }
+        }
+
     </script>
 
     <style media="screen">
@@ -96,14 +129,18 @@
       <br>
       <a onclick="confirmTest()">Confirm Popup</a>
       <br>
-      <a target="_blank" href="https://tswebviewhosting.web.app">Open Page with _blank</a>
+      <a target="_blank" href="next.html">Open Next Page with _blank</a>
       <br>
       <h2>Web to App bridge</h2>
-      <a onclick="openNewWebView()">New WebView</a>
+      <a onclick="openNewWebViewWithPath()">New WebView with path</a>
+      <br>
+      <a onclick="openNewWebViewWithUrl()">New WebView with url</a>
       <br>
       <a onclick="closeWebView()">Close WebView</a>
       <br>
       <a onclick="goBack()">Go Back</a>
+      <br>
+      <a onclick="openExternalWebView()">External WebView</a>
     </div>
     
   </body>
