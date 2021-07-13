@@ -42,7 +42,7 @@
           }
         }
 
-        function openNewWebViewWithFullUrl() {
+        function openNewWebViewWithUrl() {
           var params = {
             url: "https://tswebviewhosting.web.app/next.html"
           }
@@ -101,6 +101,23 @@
           }
         }
 
+        function outlink() {
+          var params = {
+            url: "https://www.instagram.com/dlwlrma/?hl=ko"
+            // url: "https://tswebviewhosting.web.app"
+          }
+          if (isAndroid() && !!window.tswebview.outlink) {
+            // Call Android interface
+            window.tswebview.openNewWebView(JSON.stringify(params));
+          } else if (isIOS() && !!window.webkit.messageHandlers.outlink) {
+            // Call iOS interface
+            window.webkit.messageHandlers.outlink.postMessage(params);
+          } else {
+            // No Android or iOS interface found
+            alert("No outlink APIs found.");
+          }
+        }
+
     </script>
 
     <style media="screen">
@@ -141,6 +158,8 @@
       <a onclick="goBack()">Go Back</a>
       <br>
       <a onclick="openExternalWebView()">External WebView</a>
+      <br>
+      <a onclick="outlink()">Outlink</a>
     </div>
     
   </body>
