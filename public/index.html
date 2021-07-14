@@ -5,121 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome to TSWebView JavaScript Test Page</title>
 
-    <script type="text/javascript">
-        function isAndroid() {
-          return !!window.tswebview;
-        }
-
-        function isIOS() {
-          return !!window.webkit && !!window.webkit.messageHandlers;
-        }
-
-        function reload() {
-          location.reload();
-        }
-
-        function alertTest() {
-          alert('alert popup');
-        }
-
-        function confirmTest() {
-          confirm('confirm popup');
-        }
-
-        function openNewWebViewWithPath() {
-          var params = {
-            path: "/next.html"
-          }
-          if (isAndroid() && !!window.tswebview.openNewWebView) {
-            // Call Android interface
-            window.tswebview.openNewWebView(JSON.stringify(params));
-          } else if (isIOS() && !!window.webkit.messageHandlers.openNewWebView) {
-            // Call iOS interface
-            window.webkit.messageHandlers.openNewWebView.postMessage(params);
-          } else {
-            // No Android or iOS interface found
-            alert("No openNewWebView APIs found.");
-          }
-        }
-
-        function openNewWebViewWithUrl() {
-          var params = {
-            url: "https://tswebviewhosting.web.app/next.html"
-          }
-          if (isAndroid() && !!window.tswebview.openNewWebView) {
-            // Call Android interface
-            window.tswebview.openNewWebView(JSON.stringify(params));
-          } else if (isIOS() && !!window.webkit.messageHandlers.openNewWebView) {
-            // Call iOS interface
-            window.webkit.messageHandlers.openNewWebView.postMessage(params);
-          } else {
-            // No Android or iOS interface found
-            alert("No openNewWebView APIs found.");
-          }
-        }
-
-        function closeWebView() {
-          if (isAndroid() && !!window.tswebview.closeWebView) {
-            // Call Android interface
-            window.tswebview.closeWebView(JSON.stringify(''));
-          } else if (isIOS() && !!window.webkit.messageHandlers.closeWebView) {
-            // Call iOS interface
-            window.webkit.messageHandlers.closeWebView.postMessage('');
-          } else {
-            // No Android or iOS interface found
-            alert("No closeWebView APIs found.");
-          }
-        }
-
-        function goBack() {
-          if (isAndroid() && !!window.tswebview.goBack) {
-            // Call Android interface
-            window.tswebview.closeWebView(JSON.stringify(''));
-          } else if (isIOS() && !!window.webkit.messageHandlers.goBack) {
-            // Call iOS interface
-            window.webkit.messageHandlers.goBack.postMessage('');
-          } else {
-            // No Android or iOS interface found
-            alert("No goBack APIs found.");
-          }
-        }
-
-        function openExternalWebView() {
-          var params = {
-            url: "https://www.instagram.com/dlwlrma/?hl=ko"
-            // url: "https://tswebviewhosting.web.app"
-          }
-          if (isAndroid() && !!window.tswebview.openExternalWebView) {
-            // Call Android interface
-            window.tswebview.openNewWebView(JSON.stringify(params));
-          } else if (isIOS() && !!window.webkit.messageHandlers.openExternalWebView) {
-            // Call iOS interface
-            window.webkit.messageHandlers.openExternalWebView.postMessage(params);
-          } else {
-            // No Android or iOS interface found
-            alert("No openExternalWebView APIs found.");
-          }
-        }
-
-        function outlink() {
-          var params = {
-            url: "https://www.instagram.com/dlwlrma/?hl=ko"
-            // url: "https://tswebviewhosting.web.app"
-          }
-          if (isAndroid() && !!window.tswebview.outlink) {
-            // Call Android interface
-            window.tswebview.openNewWebView(JSON.stringify(params));
-          } else if (isIOS() && !!window.webkit.messageHandlers.outlink) {
-            // Call iOS interface
-            window.webkit.messageHandlers.outlink.postMessage(params);
-          } else {
-            // No Android or iOS interface found
-            alert("No outlink APIs found.");
-          }
-        }
-
-    </script>
-
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
       #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
@@ -128,6 +13,8 @@
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
       #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
       #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #message button { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message, #message button { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
       #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
       @media (max-width: 600px) {
         body, #message { margin-top: 0; background: white; box-shadow: none; }
@@ -160,7 +47,12 @@
       <a onclick="openExternalWebView()">External WebView</a>
       <br>
       <a onclick="outlink()">Outlink</a>
+      <br>
+      <a id="event1">Firebase logEvent</a>
+      <br>
+      <a id="userprop">Firebase setUserProperty</a>
     </div>
     
+    <script type="text/javascript" src="bridge.js"></script>
   </body>
 </html>
