@@ -83,7 +83,7 @@ function openExternalWebView() {
     }
     if (isAndroid() && !!window.tswebview.openExternalWebView) {
         // Call Android interface
-        window.tswebview.openNewWebView(JSON.stringify(params));
+        window.tswebview.openExternalWebView(JSON.stringify(params));
     } else if (isIOS() && !!window.webkit.messageHandlers.openExternalWebView) {
         // Call iOS interface
         window.webkit.messageHandlers.openExternalWebView.postMessage(params);
@@ -100,7 +100,7 @@ function outlink() {
     }
     if (isAndroid() && !!window.tswebview.outlink) {
         // Call Android interface
-        window.tswebview.openNewWebView(JSON.stringify(params));
+        window.tswebview.outlink(JSON.stringify(params));
     } else if (isIOS() && !!window.webkit.messageHandlers.outlink) {
         // Call iOS interface
         window.webkit.messageHandlers.outlink.postMessage(params);
