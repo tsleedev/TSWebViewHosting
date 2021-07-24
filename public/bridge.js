@@ -66,7 +66,7 @@ function closeWebView() {
 function goBack() {
     if (isAndroid() && !!window.tswebview.goBack) {
         // Call Android interface
-        window.tswebview.closeWebView(JSON.stringify(''));
+        window.tswebview.goBack(JSON.stringify(''));
     } else if (isIOS() && !!window.webkit.messageHandlers.goBack) {
         // Call iOS interface
         window.webkit.messageHandlers.goBack.postMessage('');
@@ -110,13 +110,29 @@ function outlink() {
     }
 }
 
-function logEvent(name, params) {
+function screenEvent(name) {
     if (!name) { return; }
     var message = {
-        name: name,
-        parameters: params
+        name: name
     }
-    if (isAndroid()) {
+    if (isAndroid() && !!window.tswebview.screenEvent) {
+        // Call Android interface
+        window.tswebview.screenEvent(JSON.stringify(message));
+    } else if (isIOS() && window.webkit.messageHandlers.screenEvent) {
+        // Call iOS interface
+        window.webkit.messageHandlers.screenEvent.postMessage(message);
+    } else {
+        // No Android or iOS interface found
+        alert("No screenEvent APIs found.");
+    }
+}
+
+function logEvent(name) {
+    if (!name) { return; }
+    var message = {
+        name: name
+    }
+    if (isAndroid() && !!window.tswebview.logEvent) {
         // Call Android interface
         window.tswebview.logEvent(JSON.stringify(message));
     } else if (isIOS() && window.webkit.messageHandlers.logEvent) {
@@ -134,7 +150,7 @@ function setUserProperty(name, value) {
         name: name,
         value: value
     };
-    if (isAndroid()) {
+    if (isAndroid() && !!window.tswebview.setUserProperty) {
         // Call Android interface
         window.tswebview.setUserProperty(JSON.stringify(message));
     } else if (isIOS() && window.webkit.messageHandlers.setUserProperty) {
