@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Popup Test</title>
+    <script type="text/javascript">
+        window.onload = function() {
+            // 자동으로 팝업을 열어보기
+            var newWindow = window.open('https://example.com', 'Example Site', 'width=300,height=200');
+            
+            if(newWindow) {
+                console.log('팝업이 성공적으로 열렸습니다.');
+            } else {
+                console.log('팝업 차단으로 인해 열리지 않았습니다.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Auto Popup Test Page</h1>
+    <p>이 페이지는 로드될 때 자동으로 팝업을 엽니다.</p>
+</body>
+</html>

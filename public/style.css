@@ -1,0 +1,49 @@
+/* 창의 좌우 여백 설정 */
+body {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+
+h4, h5 {
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+/* 앱 브릿지를 응답 확인을 위한 스크립트 메시지 표시용 */
+#message-container {
+    font-size: 12px;
+    background-color: #f8f9fa;
+    padding: 4px;
+    text-align: left;
+}
+
+/* 테이블 */
+.table {
+    font-size: 11px;
+    width: 100%; /* 테이블 너비를 화면에 꽉 차게 설정 */
+    border-collapse: collapse; /* 테이블 셀 사이의 테두리를 겹치게 설정 */
+    margin-top: 8px; /* 상단 여백 추가 */
+}
+
+.table th, .table td {
+    border: 1px solid #ddd; /* 셀 테두리 스타일 */
+    padding: 4px; /* 셀 내부 패딩 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.table th {
+    background-color: #4CAF50; /* 헤더 배경색 */
+    color: white; /* 헤더 글자색 */
+    font-family: Arial, sans-serif; /* 폰트 스타일 */
+}
+
+/* 테이블 행 호버 효과 */
+.table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* 테이블 헤더에 monospace 폰트 적용되도록 유지 */
+.table th span {
+    font-family: monospace;
+}
