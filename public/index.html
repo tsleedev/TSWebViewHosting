@@ -23,6 +23,7 @@
                     <td><span id="tapOpenWindowAppStore">window.open(AppStore)</span></td>
                 </tr>
                 <tr>
+                    <td><span id="tapOpenWindowModal">window.open(Modal)</span></td>
                     <td><span id="tapCloseWindow">window.close()</span></td>
                     <td><span id="tapOpenAndCloseWindow">open&close()</span></td>
                 </tr>
@@ -30,7 +31,8 @@
                 <tr>
                     <td><span id="tapCloseParentWindow">opener.close()</span></td>
                     <td><span id="tapSendMessageToParent">opener.message()</span></td>
-                    <td><span id="tapOpenPopupWindow">팝업 테스트</span></td>
+                    <!-- <td><span id="tapOpenPopupWindow">팝업 테스트</span></td> -->
+                    <td><span id="tapLocationReload">location.reload()</span></td>
                 </tr>
                 <!-- basic -->
                 <tr>
@@ -52,9 +54,13 @@
                     <td><input type="file" accept="image/*"></td>  <!-- "사진 보관함", "사진 찍기", "파일 선택" 중 선택 할 수 있도록 제공됨 -->
                 </tr>
                 <tr>
-                    <td>Phone</td>
+                    <td>Phone tel</td>
                     <td><a href="tel:1234567890">Call 123-456-7890</a></td>
                 </tr>
+                <tr>
+                  <td>Phone telprompt</td>
+                  <td><a href="telprompt:1234567890">Call 123-456-7890</a></td>
+              </tr>
                 <tr>
                     <td>Email</td>
                     <td><a href="mailto:someone@example.com">Send Email</a></td>
@@ -97,13 +103,14 @@
             <tbody>
                 <!-- Firebase -->
                 <tr>
-                    <td><span id="bridgeFirebaseLogScreen">Firebase logScreen</span></td>
+                    <td><span id="bridgeFirebaseScreenEvent">Firebase logScreen</span></td>
                     <td><span id="bridgeFirebaseLogEvent">Firebase logEvent</span></td>
                     <td><span id="bridgeFirebaseSetUserProperty">Firebase setUserProperty</span></td>
                 </tr>
                 <tr>
-                    <td><span id="bridgeRevealSettings">네이티브 화면 설정</span></td>
-                    <td><span id="bridgeOpenPhoneSettings">폰 설정 열기</span></td>
+                    <td><span id="bridgeOpenPhoneSettings">Open Phone Settings</span></td>
+                    <td><span id="bridgeShowTabBar">Show Tab Bar</span></td>
+                    <td><span id="bridgeHideTabBar">Hide Tab Bar</span></td>
                 </tr>
             </tbody>
         </table>

@@ -30,25 +30,19 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 /* Bridge 기능 */
-document.getElementById("bridgeFirebaseLogScreen").onclick = function() {
-    firebaseLogScreen("스크린_테스트");
+document.getElementById("bridgeFirebaseScreenEvent").onclick = function() {
+    screenEvent("스크린_테스트");
 };
 
 document.getElementById("bridgeFirebaseLogEvent").onclick = function() {
     var message = {
         value: "파라미터",
     };
-    firebaseLogEvent("이벤트_테스트", message);
+    logEvent("이벤트_테스트", message);
 };
 
 document.getElementById("bridgeFirebaseSetUserProperty").onclick = function() {
-    firebaseSetUserProperty("Property_테스트", "PropertyValue");
-};
-
-document.getElementById("bridgeRevealSettings").onclick = function() {
-    callPlatformSpecificMethod('revealSettings', {}, function(response) {
-        onAppResponse("App Response: revealSettings");
-    });
+    setUserProperty("Property_테스트", "PropertyValue");
 };
 
 document.getElementById("bridgeOpenPhoneSettings").onclick = function() {
@@ -57,6 +51,17 @@ document.getElementById("bridgeOpenPhoneSettings").onclick = function() {
     });
 };
 
+document.getElementById("bridgeShowTabBar").onclick = function() {
+    callPlatformSpecificMethod('showTabBar', {}, function(response) {
+        onAppResponse("App Response: showTabBar");
+    });
+};
+
+document.getElementById("bridgeHideTabBar").onclick = function() {
+    callPlatformSpecificMethod('hideTabBar', {}, function(response) {
+        onAppResponse("App Response: hideTabBar");
+    });
+};
 
 /* 기본 브라우저 기능 */
 document.getElementById("tapOpenAndCloseWindow").onclick = function() {
@@ -67,7 +72,8 @@ document.getElementById("tapOpenAndCloseWindow").onclick = function() {
 };
 
 document.getElementById("tapOpenWindow").onclick = function() {
-    openNextPageInNewWindow()
+    let newUrl = openNextPageInNewWindow()
+    window.open(newUrl, '_blank');
 };
 
 document.getElementById("tapOpenWindowPlayStore").onclick = function() {
@@ -76,6 +82,11 @@ document.getElementById("tapOpenWindowPlayStore").onclick = function() {
 
 document.getElementById("tapOpenWindowAppStore").onclick = function() {
     window.open('https://apps.apple.com/us/app/google/id284815942', '_blank');
+};
+
+document.getElementById("tapOpenWindowModal").onclick = function() {
+    let newUrl = openNextPageInNewWindow() + "&appmode=modal"
+    window.open(newUrl, '_blank');
 };
 
 document.getElementById("tapCloseWindow").onclick = function() {
@@ -92,6 +103,10 @@ document.getElementById("tapCloseParentWindow").onclick = function() {
 
 document.getElementById("tapOpenPopupWindow").onclick = function() {
     window.open('popupHtml.html', '_blank');
+};
+
+document.getElementById("tapLocationReload").onclick = function() {
+    location.reload();
 };
 
 document.getElementById("tapGetUserAgent").onclick = function() {
@@ -156,7 +171,7 @@ function openNextPageInNewWindow() {
     // 새 창에서 다음 페이지 URL 열기
     var baseUrl = window.location.href.split('?')[0];
     var newUrl = baseUrl + "?page=" + nextPage;
-    window.open(newUrl, '_blank');
+    return newUrl
 }
 
 // bridge
@@ -173,21 +188,23 @@ function callPlatformSpecificMethod(methodName, message, callback) {
     }
     
     resetMessage()
-    if (window.AnalyticsWebInterface) {
+    if (window.Android) {
         // Android 인터페이스 호출
-        if (typeof window.AnalyticsWebInterface[methodName] === 'function') {
-            window.AnalyticsWebInterface[methodName](JSON.stringify(message));
+        if (typeof window.Android[methodName] === 'function') {
+            window.Android[methodName](JSON.stringify(message));
+            return
         }
     } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers[methodName]) {
         // iOS 인터페이스 호출
         window.webkit.messageHandlers[methodName].postMessage(message);
+        return
+    } 
+    
+    // 플랫폼 인터페이스를 찾을 수 없음
+    if (callback) {
+        callback({ error: "No native " + methodName + " method found." });
     } else {
-        // 플랫폼 인터페이스를 찾을 수 없음
-        if (callback) {
-            callback({ error: "No native " + methodName + " method found." });
-        } else {
-            alert("No native " + methodName + " method found.");
-        }
+        alert("No native " + methodName + " method found.");
     }
 }
 
@@ -217,32 +234,33 @@ function setParentText() {
 }
 
 // Firebase
-function firebaseLogScreen(name) {
+function screenEvent(name, parameters) {
     if (!name) {
         return;
     }
     
     var message = {
-        screenName: name,
+        name: name,
+        parameters: parameters
     };
     
-    callPlatformSpecificMethod('firebaseLogScreen', message);
+    callPlatformSpecificMethod('screenEvent', message);
 }
 
-function firebaseLogEvent(name, params) {
+function logEvent(name, parameters) {
     if (!name) {
         return;
     }
     
     var message = {
-        eventName: name,
-        param: params
+        name: name,
+        parameters: parameters
     };
     
-    callPlatformSpecificMethod('firebaseLogEvent', message);
+    callPlatformSpecificMethod('logEvent', message);
 }
 
-function firebaseSetUserProperty(name, value) {
+function setUserProperty(name, value) {
     if (!name || !value) {
         return;
     }
@@ -252,7 +270,7 @@ function firebaseSetUserProperty(name, value) {
         value: value
     };
     
-    callPlatformSpecificMethod('firebaseSetUserProperty', message);
+    callPlatformSpecificMethod('setUserProperty', message);
 }
 
 // 페이지 로딩 시 또는 특정 동작을 할 때 권한 상태 확인
