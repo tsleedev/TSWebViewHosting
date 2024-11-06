@@ -112,7 +112,7 @@ document.getElementById("tapOpenWindowExternal").onclick = async function() {
 
 document.getElementById("btnNavigatePageHideTabBar").onclick = async function() {
     try {
-        await toggleTabBar(true);
+        await toggleTabBar(false);
         let newUrl = openNextPageInNewWindow()
         window.location.href = newUrl;
     } catch (error) {
