@@ -205,20 +205,11 @@ function openNextPageInNewWindow() {
 }
 
 // show/hide tabbar
-let isTabBarVisible = true;
-
 async function toggleTabBar(visible) {
-    // 현재 상태와 같으면 불필요한 호출 방지
-    if (isTabBarVisible === visible) {
-        onAppResponse(`TabBar is already ${visible ? 'visible' : 'hidden'}`);
-        return;
-    }
-    
     try {
         const response = await callNativeMethod('setTabBarVisible', {
             visible: visible
         });
-        isTabBarVisible = visible;
         onAppResponse(`TabBar ${visible ? 'shown' : 'hidden'}`);
         return response;
     } catch (error) {
@@ -229,24 +220,17 @@ async function toggleTabBar(visible) {
 }
 
 // iOS swipe gesture toggle
-let isIOSSwipeEnabled = true;
-
 async function toggleIOSSwipeGesture(enabled) {
     if (!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.setSwipeGestureEnabled)) {
        console.log('iOS SwipeGesture is not supported in this environment');
        onAppResponse('iOS SwipeGesture is not supported in this environment');
        return;
     }
-    if (isIOSSwipeEnabled === enabled) {
-        onAppResponse(`iOS swipe gesture is already ${enabled ? 'enabled' : 'disabled'}`);
-        return;
-    }
 
     try {
         const response = await callNativeMethod('setSwipeGestureEnabled', {
             enabled: enabled
         });
-        isIOSSwipeEnabled = enabled;
         onAppResponse(`iOS SwipeGesture ${enabled ? 'enabled' : 'disabled'}`);
         return response;
     } catch (error) {
