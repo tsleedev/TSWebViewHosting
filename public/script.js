@@ -1,5 +1,5 @@
 // Bridge 관련 이벤트 핸들러 설정
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     // 페이지 로딩 완료 후 실행될 코드
     // URL에서 쿼리 파라미터를 파싱하는 함수
     function getQueryParam(param) {
@@ -30,25 +30,28 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 /* Bridge 기능 */
-document.getElementById("bridgeFirebaseScreenEvent").onclick = function() {
-    screenEvent("스크린_테스트");
+document.getElementById("bridgeFirebaseScreenEvent").onclick = async function() {
+    await screenEvent("스크린_테스트");
 };
 
-document.getElementById("bridgeFirebaseLogEvent").onclick = function() {
+document.getElementById("bridgeFirebaseLogEvent").onclick = async function() {
     var message = {
         value: "파라미터",
     };
-    logEvent("이벤트_테스트", message);
+    await logEvent("이벤트_테스트", message);
 };
 
-document.getElementById("bridgeFirebaseSetUserProperty").onclick = function() {
-    setUserProperty("Property_테스트", "PropertyValue");
+document.getElementById("bridgeFirebaseSetUserProperty").onclick = async function() {
+    await setUserProperty("Property_테스트", "PropertyValue");
 };
 
-document.getElementById("bridgeOpenPhoneSettings").onclick = function() {
-    callPlatformSpecificMethod('openPhoneSettings', {}, function(response) {
+document.getElementById("bridgeOpenPhoneSettings").onclick = async function() {
+    try {
+        await callNativeMethod('openPhoneSettings', {});
         onAppResponse("App Response: openPhoneSettings");
-    });
+    } catch (error) {
+        console.error('Open phone settings failed:', error);
+    }
 };
 
 document.getElementById("bridgeShowTabBar").onclick = async function() {
@@ -85,43 +88,43 @@ document.getElementById("bridgeDisableIOSSwipeGesture").onclick = async function
 };
 
 /* 기본 브라우저 기능 */
-document.getElementById("tapOpenAndCloseWindow").onclick = function() {
-    openNextPageInNewWindow()
+document.getElementById("tapOpenAndCloseWindow").onclick = async function() {
+    let newUrl = openNextPageInNewWindow();
+    window.open(newUrl, '_blank');
     setTimeout(function() {
         window.close();
     }, 1000); // 1000밀리초(1초) 후에 창 닫음
 };
 
-document.getElementById("tapOpenWindow").onclick = function() {
-    let newUrl = openNextPageInNewWindow()
+document.getElementById("tapOpenWindow").onclick = async function() {
+    let newUrl = openNextPageInNewWindow();
     window.open(newUrl, '_blank');
 };
 
-document.getElementById("tapOpenWindowModal").onclick = function() {
+document.getElementById("tapOpenWindowModal").onclick = async function() {
     let newUrl = openNextPageInNewWindow() + "&appmode=modal"
     window.open(newUrl, '_blank');
 };
 
-document.getElementById("tapOpenWindowExternal").onclick = function() {
+document.getElementById("tapOpenWindowExternal").onclick = async function() {
     window.open('https://www.google.com', '_blank');
 };
 
-document.getElementById("tapOpenWindowWithHideTabBar").onclick = async function() {
+document.getElementById("btnNavigatePageHideTabBar").onclick = async function() {
     try {
         await toggleTabBar(true);
-        onAppResponse("App Response: hideTabBar");
         let newUrl = openNextPageInNewWindow()
-        window.open(newUrl, '_blank');
+        window.location.href = newUrl;
     } catch (error) {
-        console.error('Disable iOS SwipeGesture failed:', error);
+        console.error('Page navigation with hide tabbar failed:', error);
     }
 };
 
-document.getElementById("tapCloseWindow").onclick = function() {
+document.getElementById("tapCloseWindow").onclick = async function() {
     window.close();
 };
 
-document.getElementById("tapCloseParentWindow").onclick = function() {
+document.getElementById("tapCloseParentWindow").onclick = async function() {
     if (window.opener) {
         window.opener.close();
     } else {
@@ -133,48 +136,47 @@ document.getElementById("tapCloseParentWindow").onclick = function() {
 //     window.open('popupHtml.html', '_blank');
 // };
 
-document.getElementById("tapLocationReload").onclick = function() {
+document.getElementById("tapLocationReload").onclick = async function() {
     location.reload();
 };
 
-document.getElementById("tapGetUserAgent").onclick = function() {
+document.getElementById("tapGetUserAgent").onclick = async function() {
     var userAgent = navigator.userAgent;
     alert(userAgent);
 };
 
-document.getElementById("tapShowAlert").onclick = function() {
+document.getElementById("tapShowAlert").onclick = async function() {
     alert("Alert 테스트");
 };
 
-document.getElementById("tapShowConfirm").onclick = function() {
+document.getElementById("tapShowConfirm").onclick = async function() {
     if (confirm("이 작업을 계속 진행하시겠습니까?")) {
-        setTimeout(function() {
+        setTimeout(async function() {
             alert("작업을 계속 진행합니다.");
-        }, 500); // 500밀리초(0.5초) 후에 alert 실행
+        }, 500);
     } else {
-        setTimeout(function() {
+        setTimeout(async function() {
             alert("작업을 취소합니다.");
-        }, 500); // 500밀리초(0.5초) 후에 alert 실행
+        }, 500);
     }
 };
 
 // 부모에게 값 전달
-document.getElementById("tapSendMessageToParent").onclick = function() {
+document.getElementById("tapSendMessageToParent").onclick = async function() {
     setParentText();
 };
 
-document.getElementById('tapCheckPermissionCamera').onclick = function() {
-//    alert("작업을 취소합니다.");
-    checkCameraPermission((state) => { // 화살표 함수를 사용한 콜백
-//        alert('camera permission state is ' + state);
+document.getElementById('tapCheckPermissionCamera').onclick = async function() {
+    try {
+        const state = await checkCameraPermission();
         if (state === 'granted') {
             alert('카메라 접근 권한이 허용되었습니다.');
-            // 카메라 접근 권한이 허용된 경우의 로직
         } else if (state === 'prompt') {
             alert('카메라 접근 권한이 prompt.');
         }
-    });
-//    document.getElementById('cameraInput').click(); // input[type=file] 트리거
+    } catch (error) {
+        console.error('Camera permission check failed:', error);
+    }
 };
 
 /* Function */
@@ -207,7 +209,10 @@ let isTabBarVisible = true;
 
 async function toggleTabBar(visible) {
     // 현재 상태와 같으면 불필요한 호출 방지
-    if (isTabBarVisible === visible) return;
+    if (isTabBarVisible === visible) {
+        onAppResponse(`TabBar is already ${visible ? 'visible' : 'hidden'}`);
+        return;
+    }
     
     try {
         const response = await callNativeMethod('setTabBarVisible', {
@@ -218,6 +223,7 @@ async function toggleTabBar(visible) {
         return response;
     } catch (error) {
         console.error('Failed to toggle TabBar:', error);
+        onAppResponse('Failed to toggle TabBar:', error);
         throw error;
     }
 }
@@ -228,9 +234,13 @@ let isIOSSwipeEnabled = true;
 async function toggleIOSSwipeGesture(enabled) {
     if (!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.setSwipeGestureEnabled)) {
        console.log('iOS SwipeGesture is not supported in this environment');
+       onAppResponse('iOS SwipeGesture is not supported in this environment');
        return;
     }
-    if (isIOSSwipeEnabled === enabled) return;
+    if (isIOSSwipeEnabled === enabled) {
+        onAppResponse(`iOS swipe gesture is already ${enabled ? 'enabled' : 'disabled'}`);
+        return;
+    }
 
     try {
         const response = await callNativeMethod('setSwipeGestureEnabled', {
@@ -241,6 +251,7 @@ async function toggleIOSSwipeGesture(enabled) {
         return response;
     } catch (error) {
         console.error('Failed to toggle iOS SwipeGesture:', error);
+        onAppResponse('Failed to toggle iOS SwipeGesture:', error);
         throw error;
     }
 }
@@ -304,68 +315,59 @@ function onAppResponse(message) {
 }
 
 // 부모와 자식 간의 통신
-window.addEventListener("message", (event) => {
+window.addEventListener("message", async (event) => {
     var messageContainer = document.getElementById('message-container');
     messageContainer.innerText = event.data;
 }, false);
 
-function setParentText() {
+async function setParentText() {
     if (window.opener) {
-        window.opener.postMessage("자식에서 전달", "*"); // 최대한 안전을 위해 '*' 대신 정확한 부모 URL 사용
+        window.opener.postMessage("자식에서 전달", "*");
     } else {
-        alert("No opener available");
+        throw new Error("No opener available");
     }
 }
 
 // Firebase
-function screenEvent(name, parameters) {
-    if (!name) {
-        return;
-    }
+async function screenEvent(name, parameters) {
+    if (!name) return;
     
     var message = {
         name: name,
         parameters: parameters
     };
     
-    callPlatformSpecificMethod('screenEvent', message);
+    return await callNativeMethod('screenEvent', message);
 }
 
-function logEvent(name, parameters) {
-    if (!name) {
-        return;
-    }
+async function logEvent(name, parameters) {
+    if (!name) return;
     
     var message = {
         name: name,
         parameters: parameters
     };
     
-    callPlatformSpecificMethod('logEvent', message);
+    return await callNativeMethod('logEvent', message);
 }
 
-function setUserProperty(name, value) {
-    if (!name || !value) {
-        return;
-    }
+async function setUserProperty(name, value) {
+    if (!name || !value) return;
     
     var message = {
         name: name,
         value: value
     };
     
-    callPlatformSpecificMethod('setUserProperty', message);
+    return await callNativeMethod('setUserProperty', message);
 }
 
 // 페이지 로딩 시 또는 특정 동작을 할 때 권한 상태 확인
-function checkCameraPermission(onPermissionChecked) {
-    navigator.permissions.query({ name: 'camera' })
-        .then((permissionStatus) => { // 여기서 화살표 함수 사용
-            // 클로저를 통해 permissionStatus.state를 외부 함수에 전달
-            onPermissionChecked(permissionStatus.state);
-        })
-        .catch(function(error) {
-            alert('카메라 권한 상태 확인 오류: ' + error);
+function checkCameraPermission() {
+    return navigator.permissions.query({ name: 'camera' })
+        .then((permissionStatus) => permissionStatus.state)
+        .catch((error) => {
+            throw new Error('카메라 권한 상태 확인 오류: ' + error);
         });
 }
 
