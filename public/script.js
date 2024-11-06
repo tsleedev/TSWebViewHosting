@@ -51,16 +51,37 @@ document.getElementById("bridgeOpenPhoneSettings").onclick = function() {
     });
 };
 
-document.getElementById("bridgeShowTabBar").onclick = function() {
-    callPlatformSpecificMethod('showTabBar', {}, function(response) {
-        onAppResponse("App Response: showTabBar");
-    });
+document.getElementById("bridgeShowTabBar").onclick = async function() {
+    try {
+        await toggleTabBar(true);
+    } catch (error) {
+        console.error('Show TabBar failed:', error);
+    }
 };
 
-document.getElementById("bridgeHideTabBar").onclick = function() {
-    callPlatformSpecificMethod('hideTabBar', {}, function(response) {
-        onAppResponse("App Response: hideTabBar");
-    });
+document.getElementById("bridgeHideTabBar").onclick = async function() {
+    try {
+        await toggleTabBar(false);
+    } catch (error) {
+        console.error('Hide TabBar failed:', error);
+    }
+};
+
+// 클릭 이벤트 핸들러 
+document.getElementById("bridgeEnableIOSSwipeGesture").onclick = async function() {
+    try {
+        await toggleIOSSwipeGesture(true);
+    } catch (error) {
+        console.error('Enable iOS SwipeGesture failed:', error);
+    }
+};
+
+document.getElementById("bridgeDisableIOSSwipeGesture").onclick = async function() {
+    try {
+        await toggleIOSSwipeGesture(false);
+    } catch (error) {
+        console.error('Disable iOS SwipeGesture failed:', error);
+    }
 };
 
 /* 기본 브라우저 기능 */
@@ -76,17 +97,24 @@ document.getElementById("tapOpenWindow").onclick = function() {
     window.open(newUrl, '_blank');
 };
 
-document.getElementById("tapOpenWindowPlayStore").onclick = function() {
-    window.open('https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox', '_blank');
-};
-
-document.getElementById("tapOpenWindowAppStore").onclick = function() {
-    window.open('https://apps.apple.com/us/app/google/id284815942', '_blank');
-};
-
 document.getElementById("tapOpenWindowModal").onclick = function() {
     let newUrl = openNextPageInNewWindow() + "&appmode=modal"
     window.open(newUrl, '_blank');
+};
+
+document.getElementById("tapOpenWindowExternal").onclick = function() {
+    window.open('https://www.google.com', '_blank');
+};
+
+document.getElementById("tapOpenWindowWithHideTabBar").onclick = async function() {
+    try {
+        await toggleTabBar(true);
+        onAppResponse("App Response: hideTabBar");
+        let newUrl = openNextPageInNewWindow()
+        window.open(newUrl, '_blank');
+    } catch (error) {
+        console.error('Disable iOS SwipeGesture failed:', error);
+    }
 };
 
 document.getElementById("tapCloseWindow").onclick = function() {
@@ -101,9 +129,9 @@ document.getElementById("tapCloseParentWindow").onclick = function() {
     }
 };
 
-document.getElementById("tapOpenPopupWindow").onclick = function() {
-    window.open('popupHtml.html', '_blank');
-};
+// document.getElementById("tapOpenPopupWindow").onclick = function() {
+//     window.open('popupHtml.html', '_blank');
+// };
 
 document.getElementById("tapLocationReload").onclick = function() {
     location.reload();
@@ -172,6 +200,62 @@ function openNextPageInNewWindow() {
     var baseUrl = window.location.href.split('?')[0];
     var newUrl = baseUrl + "?page=" + nextPage;
     return newUrl
+}
+
+// show/hide tabbar
+let isTabBarVisible = true;
+
+async function toggleTabBar(visible) {
+    // 현재 상태와 같으면 불필요한 호출 방지
+    if (isTabBarVisible === visible) return;
+    
+    try {
+        const response = await callNativeMethod('setTabBarVisible', {
+            visible: visible
+        });
+        isTabBarVisible = visible;
+        onAppResponse(`TabBar ${visible ? 'shown' : 'hidden'}`);
+        return response;
+    } catch (error) {
+        console.error('Failed to toggle TabBar:', error);
+        throw error;
+    }
+}
+
+// iOS swipe gesture toggle
+let isIOSSwipeEnabled = true;
+
+async function toggleIOSSwipeGesture(enabled) {
+    if (!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.setSwipeGestureEnabled)) {
+       console.log('iOS SwipeGesture is not supported in this environment');
+       return;
+    }
+    if (isIOSSwipeEnabled === enabled) return;
+
+    try {
+        const response = await callNativeMethod('setSwipeGestureEnabled', {
+            enabled: enabled
+        });
+        isIOSSwipeEnabled = enabled;
+        onAppResponse(`iOS SwipeGesture ${enabled ? 'enabled' : 'disabled'}`);
+        return response;
+    } catch (error) {
+        console.error('Failed to toggle iOS SwipeGesture:', error);
+        throw error;
+    }
+}
+
+// Promise 기반 브릿지 래퍼 함수
+function callNativeMethod(methodName, message = {}) {
+    return new Promise((resolve, reject) => {
+        callPlatformSpecificMethod(methodName, message, (response) => {
+            if (response && response.error) {
+                reject(response.error);
+            } else {
+                resolve(response);
+            }
+        });
+    });
 }
 
 // bridge
