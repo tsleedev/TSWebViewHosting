@@ -1,3 +1,18 @@
+// 하단 고정 텍스트 필드 
+document.addEventListener("DOMContentLoaded", function () {
+    const inputField = document.getElementById("chatInput");
+    const content = document.querySelector(".content");
+
+    inputField.addEventListener("focus", () => {
+        document.body.style.paddingBottom = "300px"; // 키보드 올라올 때 추가 공간 확보
+        content.scrollTop = content.scrollHeight; // 입력 시 최신 메시지가 보이도록 스크롤 이동
+    });
+
+    inputField.addEventListener("blur", () => {
+        document.body.style.paddingBottom = "0"; // 키보드 내려가면 원래대로
+    });
+});
+
 // Bridge 관련 이벤트 핸들러 설정
 document.addEventListener("DOMContentLoaded", async function() {
     // 페이지 로딩 완료 후 실행될 코드

@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Message Handler Test</title>
-            <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Message Handler Test</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="content">
         <h4>message 응답</h4>
         <div id="message-container">
             응답 대기
         </div>
-        
+
         <h4>기본 브라우저 기능</h4>
         <h5>JavaScript click tests</h5>
+        <!-- 기존의 모든 콘텐츠를 content div 안에 포함 -->
         <table class="table">
             <tbody>
                 <!-- window -->
@@ -46,28 +51,28 @@
                 </tr>
             </tbody>
         </table>
-        
+
         <table class="table">
             <tbody>
                 <tr>
                     <td>보관함</td>
-                    <td><input type="file" accept="image/*"></td>  <!-- "사진 보관함", "사진 찍기", "파일 선택" 중 선택 할 수 있도록 제공됨 -->
+                    <td><input type="file" accept="image/*"></td> <!-- "사진 보관함", "사진 찍기", "파일 선택" 중 선택 할 수 있도록 제공됨 -->
                 </tr>
                 <tr>
                     <td>Phone tel</td>
                     <td><a href="tel:1234567890">Call 123-456-7890</a></td>
                 </tr>
                 <tr>
-                  <td>Phone telprompt</td>
-                  <td><a href="telprompt:1234567890">Call 123-456-7890</a></td>
-              </tr>
+                    <td>Phone telprompt</td>
+                    <td><a href="telprompt:1234567890">Call 123-456-7890</a></td>
+                </tr>
                 <tr>
                     <td>Email</td>
                     <td><a href="mailto:someone@example.com">Send Email</a></td>
                 </tr>
             </tbody>
         </table>
-        
+
         <h5>href click tests</h5>
         <table class="table">
             <thead>
@@ -83,21 +88,28 @@
                 </tr>
                 <!-- Android -->
                 <tr>
-                    <td><a target="_top" href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox">Play Store Link (https://)</a></td>
-                    <td><a target="_blank" href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox">Play Store Link (https://)</a></td>
+                    <td><a target="_top"
+                            href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox">Play
+                            Store Link (https://)</a></td>
+                    <td><a target="_blank"
+                            href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox">Play
+                            Store Link (https://)</a></td>
                 </tr>
                 <tr>
-                    <td><a target="_top" href="market://details?id=com.google.android.googlequicksearchbox">Play Store Link (market://)</a></td>
-                    <td><a target="_blank" href="market://details?id=com.google.android.googlequicksearchbox">Play Store Link (market://)</a></td>
+                    <td><a target="_top" href="market://details?id=com.google.android.googlequicksearchbox">Play Store
+                            Link (market://)</a></td>
+                    <td><a target="_blank" href="market://details?id=com.google.android.googlequicksearchbox">Play Store
+                            Link (market://)</a></td>
                 </tr>
                 <!-- iOS -->
                 <tr>
                     <td><a target="_top" href="https://apps.apple.com/us/app/google/id284815942">App Store Link</a></td>
-                    <td><a target="_blank" href="https://apps.apple.com/us/app/google/id284815942">App Store Link</a></td>
+                    <td><a target="_blank" href="https://apps.apple.com/us/app/google/id284815942">App Store Link</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        
+
         <h4>Bridge 사용</h4>
         <table class="table">
             <tbody>
@@ -118,8 +130,14 @@
                 </tr>
             </tbody>
         </table>
-        
-        <!-- JavaScript 파일 연결 -->
-        <script src="script.js"></script>
-    </body>
+    </div>
+    <div class="fixed-input-container">
+        <input type="text" id="chatInput" placeholder="메시지를 입력하세요...">
+        <button id="sendButton">전송</button>
+    </div>
+
+    <!-- JavaScript 파일 연결 -->
+    <script src="script.js"></script>
+</body>
+
 </html>
