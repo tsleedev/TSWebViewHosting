@@ -66,11 +66,12 @@ h4, h5 {
     left: 0;
     width: 100%;
     background-color: white;
-    padding: 10px;
+    padding: 10px env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     border-top: 1px solid #ccc;
     display: flex;
     align-items: center;
-    gap: 10px; /* 입력 필드와 버튼 사이 여백 */
+    gap: 10px;
+    box-sizing: border-box;
 }
 
 /* 입력 필드 스타일 */
