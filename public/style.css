@@ -66,12 +66,13 @@ h4, h5 {
     left: 0;
     width: 100%;
     background-color: white;
-    padding: 10px env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    padding: 10px;
     border-top: 1px solid #ccc;
     display: flex;
     align-items: center;
     gap: 10px;
     box-sizing: border-box;
+    z-index: 999; /* 선택 사항: 다른 요소 위에 보장하고 싶을 때 */
 }
 
 /* 입력 필드 스타일 */
