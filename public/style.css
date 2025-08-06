@@ -75,6 +75,13 @@ h4, h5 {
     z-index: 999; /* 선택 사항: 다른 요소 위에 보장하고 싶을 때 */
 }
 
+.fixed-input-container::after {
+  content: "";
+  display: block;
+  height: env(safe-area-inset-bottom);
+  background-color: red;
+}
+
 /* 입력 필드 스타일 */
 .fixed-input-container input {
     flex: 1;
