@@ -176,6 +176,10 @@ document.getElementById("tapShowConfirm").onclick = async function() {
     }
 };
 
+document.getElementById("tapShowCustomAlert").onclick = async function() {
+    showCustomAlert("이것은 커스텀 Alert 입니다.");
+};
+
 // 부모에게 값 전달
 document.getElementById("tapSendMessageToParent").onclick = async function() {
     setParentText();
@@ -217,6 +221,36 @@ function openNextPageInNewWindow() {
     var baseUrl = window.location.href.split('?')[0];
     var newUrl = baseUrl + "?page=" + nextPage;
     return newUrl
+}
+
+function showCustomAlert(message, buttonText = "확인") {
+    // 기존 alert 이미 떠있으면 제거
+    const existingOverlay = document.querySelector('.custom-alert-overlay');
+    if (existingOverlay) existingOverlay.remove();
+
+    // 오버레이 생성
+    const overlay = document.createElement("div");
+    overlay.className = "custom-alert-overlay";
+
+    // alert 박스 생성
+    const box = document.createElement("div");
+    box.className = "custom-alert-box";
+
+    const msg = document.createElement("div");
+    msg.className = "custom-alert-message";
+    msg.textContent = message;
+
+    const btn = document.createElement("button");
+    btn.className = "custom-alert-button";
+    btn.textContent = buttonText;
+    btn.onclick = function() {
+        document.body.removeChild(overlay);
+    };
+
+    box.appendChild(msg);
+    box.appendChild(btn);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
 }
 
 // show/hide tabbar
