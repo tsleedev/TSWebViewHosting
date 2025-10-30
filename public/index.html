@@ -1,143 +1,256 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"
+        />
+        <title>Message Handler Test</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Message Handler Test</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
+    <body>
+        <div class="content">
+            <h4>message 응답</h4>
+            <div id="message-container">응답 대기</div>
 
-<body>
-    <div class="content">
-        <h4>message 응답</h4>
-        <div id="message-container">
-            응답 대기
+            <h4>기본 브라우저 기능</h4>
+            <h5>JavaScript click tests</h5>
+            <!-- 기존의 모든 콘텐츠를 content div 안에 포함 -->
+            <table class="table">
+                <tbody>
+                    <!-- window -->
+                    <tr>
+                        <td><span id="tapOpenWindow">window.open()</span></td>
+                        <td>
+                            <span id="tapOpenWindowModal"
+                                >window.open(Modal)</span
+                            >
+                        </td>
+                        <td>
+                            <span id="tapOpenWindowExternal"
+                                >window.open(External)</span
+                            >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span id="tapCloseWindow">window.close()</span></td>
+                        <td>
+                            <span id="tapOpenAndCloseWindow">open&close()</span>
+                        </td>
+                        <td>
+                            <span id="btnNavigatePageHideTabBar"
+                                >NavigatePage(HideTab)</span
+                            >
+                        </td>
+                    </tr>
+                    <!-- window.opener -->
+                    <tr>
+                        <td>
+                            <span id="tapCloseParentWindow"
+                                >opener.close()</span
+                            >
+                        </td>
+                        <td>
+                            <span id="tapSendMessageToParent"
+                                >opener.message()</span
+                            >
+                        </td>
+                        <!-- <td><span id="tapOpenPopupWindow">팝업 테스트</span></td> -->
+                        <td>
+                            <span id="tapLocationReload"
+                                >location.reload()</span
+                            >
+                        </td>
+                    </tr>
+                    <!-- basic -->
+                    <tr>
+                        <td><span id="tapShowAlert">alert()</span></td>
+                        <td><span id="tapShowConfirm">confirm()</span></td>
+                        <td>
+                            <span id="tapShowCustomAlert">custom alert</span>
+                        </td>
+                    </tr>
+                    <!-- expert -->
+                    <tr>
+                        <td>
+                            <span id="tapGetUserAgent"
+                                >navigator.userAgent</span
+                            >
+                        </td>
+                        <td>
+                            <span id="tapCheckPermissionCamera"
+                                >카메라 권한</span
+                            >
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>보관함</td>
+                        <td><input type="file" accept="image/*" /></td>
+                        <!-- "사진 보관함", "사진 찍기", "파일 선택" 중 선택 할 수 있도록 제공됨 -->
+                    </tr>
+                    <tr>
+                        <td>Phone tel</td>
+                        <td><a href="tel:1234567890">Call 123-456-7890</a></td>
+                    </tr>
+                    <tr>
+                        <td>Phone telprompt</td>
+                        <td>
+                            <a href="telprompt:1234567890">Call 123-456-7890</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>
+                            <a href="mailto:someone@example.com">Send Email</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h5>href click tests</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <span style="font-family: monospace"
+                                >target="_top"</span
+                            >
+                        </th>
+                        <th>
+                            <span style="font-family: monospace"
+                                >target="_blank"</span
+                            >
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <a target="_top" href="https://google.com/"
+                                >Web Link</a
+                            >
+                        </td>
+                        <td>
+                            <a target="_blank" href="https://google.com/"
+                                >Web Link</a
+                            >
+                        </td>
+                    </tr>
+                    <!-- Android -->
+                    <tr>
+                        <td>
+                            <a
+                                target="_top"
+                                href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox"
+                                >Play Store Link (https://)</a
+                            >
+                        </td>
+                        <td>
+                            <a
+                                target="_blank"
+                                href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox"
+                                >Play Store Link (https://)</a
+                            >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a
+                                target="_top"
+                                href="market://details?id=com.google.android.googlequicksearchbox"
+                                >Play Store Link (market://)</a
+                            >
+                        </td>
+                        <td>
+                            <a
+                                target="_blank"
+                                href="market://details?id=com.google.android.googlequicksearchbox"
+                                >Play Store Link (market://)</a
+                            >
+                        </td>
+                    </tr>
+                    <!-- iOS -->
+                    <tr>
+                        <td>
+                            <a
+                                target="_top"
+                                href="https://apps.apple.com/us/app/google/id284815942"
+                                >App Store Link</a
+                            >
+                        </td>
+                        <td>
+                            <a
+                                target="_blank"
+                                href="https://apps.apple.com/us/app/google/id284815942"
+                                >App Store Link</a
+                            >
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Bridge 사용</h4>
+            <table class="table">
+                <tbody>
+                    <!-- Firebase -->
+                    <tr>
+                        <td>
+                            <span id="bridgeFirebaseScreenEvent"
+                                >Firebase logScreen</span
+                            >
+                        </td>
+                        <td>
+                            <span id="bridgeFirebaseLogEvent"
+                                >Firebase logEvent</span
+                            >
+                        </td>
+                        <td>
+                            <span id="bridgeFirebaseSetUserProperty"
+                                >Firebase setUserProperty</span
+                            >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="bridgeOpenPhoneSettings"
+                                >Open Phone Settings</span
+                            >
+                        </td>
+                        <td><span id="bridgeShowTabBar">Show Tab Bar</span></td>
+                        <td><span id="bridgeHideTabBar">Hide Tab Bar</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="bridgeEnableIOSSwipeGesture"
+                                >enableSwipe(iOS)</span
+                            >
+                        </td>
+                        <td>
+                            <span id="bridgeDisableIOSSwipeGesture"
+                                >disableSwipe(iOS)</span
+                            >
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="fixed-input-container">
+            <input
+                type="text"
+                id="chatInput"
+                placeholder="메시지를 입력하세요..."
+            />
+            <button id="sendButton">전송</button>
         </div>
 
-        <h4>기본 브라우저 기능</h4>
-        <h5>JavaScript click tests</h5>
-        <!-- 기존의 모든 콘텐츠를 content div 안에 포함 -->
-        <table class="table">
-            <tbody>
-                <!-- window -->
-                <tr>
-                    <td><span id="tapOpenWindow">window.open()</span></td>
-                    <td><span id="tapOpenWindowModal">window.open(Modal)</span></td>
-                    <td><span id="tapOpenWindowExternal">window.open(External)</span></td>
-                </tr>
-                <tr>
-                    <td><span id="tapCloseWindow">window.close()</span></td>
-                    <td><span id="tapOpenAndCloseWindow">open&close()</span></td>
-                    <td><span id="btnNavigatePageHideTabBar">NavigatePage(HideTab)</span></td>
-                </tr>
-                <!-- window.opener -->
-                <tr>
-                    <td><span id="tapCloseParentWindow">opener.close()</span></td>
-                    <td><span id="tapSendMessageToParent">opener.message()</span></td>
-                    <!-- <td><span id="tapOpenPopupWindow">팝업 테스트</span></td> -->
-                    <td><span id="tapLocationReload">location.reload()</span></td>
-                </tr>
-                <!-- basic -->
-                <tr>
-                    <td><span id="tapShowAlert">alert()</span></td>
-                    <td><span id="tapShowConfirm">confirm()</span></td>
-                    <td><span id="tapShowCustomAlert">custom alert</span></td>
-                </tr>
-                <!-- expert -->
-                <tr>
-                    <td><span id="tapGetUserAgent">navigator.userAgent</span></td>
-                    <td><span id="tapCheckPermissionCamera">카메라 권한</span></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>보관함</td>
-                    <td><input type="file" accept="image/*"></td> <!-- "사진 보관함", "사진 찍기", "파일 선택" 중 선택 할 수 있도록 제공됨 -->
-                </tr>
-                <tr>
-                    <td>Phone tel</td>
-                    <td><a href="tel:1234567890">Call 123-456-7890</a></td>
-                </tr>
-                <tr>
-                    <td>Phone telprompt</td>
-                    <td><a href="telprompt:1234567890">Call 123-456-7890</a></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><a href="mailto:someone@example.com">Send Email</a></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h5>href click tests</h5>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th><span style="font-family: monospace">target="_top"</span></th>
-                    <th><span style="font-family: monospace">target="_blank"</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a target="_top" href="https://google.com/">Web Link</a></td>
-                    <td><a target="_blank" href="https://google.com/">Web Link</a></td>
-                </tr>
-                <!-- Android -->
-                <tr>
-                    <td><a target="_top"
-                            href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox">Play
-                            Store Link (https://)</a></td>
-                    <td><a target="_blank"
-                            href="https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox">Play
-                            Store Link (https://)</a></td>
-                </tr>
-                <tr>
-                    <td><a target="_top" href="market://details?id=com.google.android.googlequicksearchbox">Play Store
-                            Link (market://)</a></td>
-                    <td><a target="_blank" href="market://details?id=com.google.android.googlequicksearchbox">Play Store
-                            Link (market://)</a></td>
-                </tr>
-                <!-- iOS -->
-                <tr>
-                    <td><a target="_top" href="https://apps.apple.com/us/app/google/id284815942">App Store Link</a></td>
-                    <td><a target="_blank" href="https://apps.apple.com/us/app/google/id284815942">App Store Link</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h4>Bridge 사용</h4>
-        <table class="table">
-            <tbody>
-                <!-- Firebase -->
-                <tr>
-                    <td><span id="bridgeFirebaseScreenEvent">Firebase logScreen</span></td>
-                    <td><span id="bridgeFirebaseLogEvent">Firebase logEvent</span></td>
-                    <td><span id="bridgeFirebaseSetUserProperty">Firebase setUserProperty</span></td>
-                </tr>
-                <tr>
-                    <td><span id="bridgeOpenPhoneSettings">Open Phone Settings</span></td>
-                    <td><span id="bridgeShowTabBar">Show Tab Bar</span></td>
-                    <td><span id="bridgeHideTabBar">Hide Tab Bar</span></td>
-                </tr>
-                <tr>
-                    <td><span id="bridgeEnableIOSSwipeGesture">enableSwipe(iOS)</span></td>
-                    <td><span id="bridgeDisableIOSSwipeGesture">disableSwipe(iOS)</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="fixed-input-container">
-        <input type="text" id="chatInput" placeholder="메시지를 입력하세요...">
-        <button id="sendButton">전송</button>
-    </div>
-
-    <!-- JavaScript 파일 연결 -->
-    <script src="script.js"></script>
-</body>
-
+        <!-- JavaScript 파일 연결 -->
+        <script src="script.js"></script>
+    </body>
 </html>

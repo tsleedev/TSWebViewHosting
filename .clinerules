@@ -1,0 +1,17 @@
+# TSWebViewHosting 프로젝트 규칙
+
+## 프로젝트 구조
+- 작업 파일 위치: `public/` 폴더
+  - `public/index.html` - 메인 HTML
+  - `public/style.css` - 스타일시트
+  - `public/script.js` - JavaScript
+
+## 배포
+- Firebase 호스팅 사용
+- Git push 시 자동 배포됨 (GitHub Actions 또는 Firebase CI/CD)
+- 수동 배포 불필요
+
+## 개발 노트
+- WebView 테스트 페이지
+- 상단 헤더는 position: fixed로 고정
+- 하단 입력 필드도 fixed
