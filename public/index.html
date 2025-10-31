@@ -247,6 +247,8 @@
                 id="chatInput"
                 placeholder="메시지를 입력하세요..."
                 autocomplete="off"
+                name="chatInput"
+                readonly onfocus="this.removeAttribute('readonly');"
             />
             <button id="sendButton">전송</button>
         </div>
