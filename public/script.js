@@ -3,54 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputField = document.getElementById("chatInput");
   const content = document.querySelector(".content");
 
-  // iOS 감지
-  const isIOS =
-    /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-  // 키보드로 인한 viewport 변경 시 입력바 위치 조정 (iOS만)
-  if (isIOS && window.visualViewport) {
-    const inputContainer = document.querySelector(".fixed-input-container");
-    let keyboardAnimationTimeout = null;
-    let isKeyboardAnimating = false;
-
-    window.visualViewport.addEventListener("resize", () => {
-      const visualViewportHeight = window.visualViewport.height;
-      const viewportHeight = window.innerHeight;
-      const keyboardHeight = viewportHeight - visualViewportHeight;
-
-      if (keyboardHeight > 0) {
-        // 키보드가 올라오는 중
-        if (!isKeyboardAnimating) {
-          isKeyboardAnimating = true;
-
-          // 먼저 padding-bottom 제거
-          inputContainer.style.paddingBottom = "10px"; // safe-area 제거
-
-          // 키보드 애니메이션이 끝난 후 입력바를 키보드 바로 위로 이동 (150ms 애니메이션)
-          keyboardAnimationTimeout = setTimeout(() => {
-            const finalKeyboardHeight =
-              viewportHeight - window.visualViewport.height;
-            inputContainer.style.transition = "bottom 0.15s ease-out";
-            inputContainer.style.bottom = `${finalKeyboardHeight}px`;
-            isKeyboardAnimating = false;
-          }, 300);
-        }
-      } else {
-        // 키보드가 내려감
-        isKeyboardAnimating = false;
-
-        // 기존 타이머 취소
-        if (keyboardAnimationTimeout) {
-          clearTimeout(keyboardAnimationTimeout);
-        }
-
-        // 애니메이션 없이 즉시 원위치 및 CSS 기본값 복원
-        inputContainer.style.transition = "none";
-        inputContainer.style.bottom = "0";
-        inputContainer.style.paddingBottom = ""; // CSS 기본값으로 복원
-      }
-    });
-  }
+  // NOTE: iOS 키보드 처리는 앱에서 webView 높이 조절로 처리
+  // visualViewport resize 리스너 제거됨 (2024.12.10)
 
   // 콘텐츠 영역 터치 시 키보드 내리기 (스크롤과 구분 - 터치 시간 기준)
   let touchStartTime = 0;
