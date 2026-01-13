@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"
+        />
+        <title>Keyboard Test</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <style>
+            /* 키보드 높이를 CSS 변수로 관리 */
+            :root {
+                --keyboard-height: 0px;
+            }
+
+            /* 하단 고정 입력 필드 - 키보드 높이 반영 */
+            .fixed-input-container {
+                bottom: var(--keyboard-height);
+                transition: bottom 0.25s ease-out;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="content">
+            <h4>Keyboard Test Page</h4>
+            <div id="message-container">키보드 높이: 0px</div>
+
+            <h5>테스트 안내</h5>
+            <p>하단 입력 필드를 탭하여 키보드가 올라올 때 동작을 확인하세요.</p>
+            <p>contentInset 방식 + 웹에서 하단 입력 필드 위치 조정</p>
+
+            <h5>현재 설정</h5>
+            <ul>
+                <li>네이티브: contentInset으로 스크롤 영역 조정</li>
+                <li>웹: CSS 변수로 하단 입력 필드 bottom 값 조정</li>
+            </ul>
+
+            <h5>더미 콘텐츠 (스크롤 테스트용)</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit.</p>
+            <p>Excepteur sint occaecat cupidatat non proident.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit.</p>
+            <p>Excepteur sint occaecat cupidatat non proident.</p>
+        </div>
+
+        <div class="fixed-input-container">
+            <input
+                type="text"
+                id="chatInput"
+                placeholder="메시지를 입력하세요..."
+                autocorrect="off"
+                spellcheck="false"
+            />
+            <button id="sendButton">전송</button>
+        </div>
+
+        <script>
+            // 네이티브에서 호출하는 키보드 높이 전달 함수
+            function onKeyboardShow(height) {
+                document.documentElement.style.setProperty('--keyboard-height', height + 'px');
+                document.getElementById('message-container').textContent = '키보드 높이: ' + height + 'px';
+            }
+
+            function onKeyboardHide() {
+                document.documentElement.style.setProperty('--keyboard-height', '0px');
+                document.getElementById('message-container').textContent = '키보드 높이: 0px';
+            }
+
+            // 전송 버튼 클릭 시 입력 필드 blur (키보드 내림)
+            document.getElementById('sendButton').addEventListener('click', function() {
+                const input = document.getElementById('chatInput');
+                alert('입력값: ' + input.value);
+                input.value = '';
+                input.blur();
+            });
+        </script>
+    </body>
+</html>
