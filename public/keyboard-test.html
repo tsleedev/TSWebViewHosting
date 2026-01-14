@@ -80,6 +80,36 @@
                 input.value = '';
                 input.blur();
             });
+
+            // 콘텐츠 영역 터치 시 키보드 내리기 (스크롤과 구분 - 터치 시간 기준)
+            document.addEventListener('DOMContentLoaded', function() {
+                const inputField = document.getElementById('chatInput');
+                const content = document.querySelector('.content');
+
+                let touchStartTime = 0;
+                let touchMoved = false;
+
+                content.addEventListener('touchstart', (e) => {
+                    touchStartTime = Date.now();
+                    touchMoved = false;
+                });
+
+                content.addEventListener('touchmove', (e) => {
+                    touchMoved = true; // 스크롤 중
+                });
+
+                content.addEventListener('touchend', (e) => {
+                    const touchDuration = Date.now() - touchStartTime;
+
+                    // 짧은 터치(탭)이고 스크롤하지 않았을 때만 키보드 내리기
+                    if (!touchMoved && touchDuration < 300) {
+                        // input 필드나 버튼이 아닌 경우에만 키보드 내리기
+                        if (!e.target.closest('input, button, a, .fixed-input-container')) {
+                            inputField.blur(); // 키보드 내리기
+                        }
+                    }
+                });
+            });
         </script>
     </body>
 </html>
